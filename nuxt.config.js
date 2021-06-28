@@ -7,6 +7,10 @@ export default {
   router: {
     base: '/mastermind/',
   },
+  
+  publicRuntimeConfig: {
+    realmAppId: process.env.REALM_APP_ID,
+  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -31,6 +35,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/realm.client.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
