@@ -15,23 +15,54 @@
 </template>
 
 <script>
-import * as Realm from 'realm-web'
-
 export default {
   computed: {
     game() {
       return this.$store.state.game
     },
   },
-  async mounted() {
-    const credentials = Realm.Credentials.anonymous()
-    
-    try {
-      const user = await this.$realm.logIn(credentials)
-      this.$store.commit('setUserId', user.id)
-    } catch (error) {
-      this.$store.commit('showSnackbar', { color: 'error', message: 'The website is not available right now' })
-    }
+  watch: {
+    game(newValue, oldValue) {
+      if (newValue && !oldValue) {
+        this.watchGameEvents()
+        this.watchGameEnd()
+      }
+    },
+  },
+  methods: {
+    async watchGameEvents() {
+      const mongodb = this.$realm.currentUser.mongoClient('mongodb-atlas')
+      const gamesCollection = mongodb.db('mastermind').collection('games')
+      const { name } = this.game
+      
+      for await (const change of gamesCollection.watch({
+        filter: {
+          operationType: 'update',
+          'fullDocument.name': name,
+        },
+      })) {
+        if (!this.game || this.game.name !== name) { return }
+        const { fullDocument } = change
+        this.$store.commit('updateGame', fullDocument)
+      }
+    },
+    async watchGameEnd() {
+      const mongodb = this.$realm.currentUser.mongoClient('mongodb-atlas')
+      const gamesCollection = mongodb.db('mastermind').collection('games')
+      const { name } = this.game
+      
+      // eslint-disable-next-line no-unused-vars
+      for await (const change of gamesCollection.watch({
+        filter: {
+          operationType: 'delete',
+          'fullDocument.name': name,
+        },
+      })) {
+        if (!this.game || this.game.name !== name) { return }
+        this.$store.commit('leaveGame')
+        this.$store.commit('showSnackbar', { color: 'info', message: 'Game was ended' })
+      }
+    },
   },
 }
 </script>

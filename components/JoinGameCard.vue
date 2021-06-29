@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import * as Realm from 'realm-web'
+
 const nameMaxLength = 20
 
 export default {
@@ -52,14 +54,29 @@ export default {
   },
   methods: {
     async join() {
-      this.$store.commit('startJoiningGame')
-      const { game, error } = await this.$realm.currentUser.functions.joinGame(this.name)
-      this.$store.commit('stopJoiningGame')
+      const credentials = Realm.Credentials.anonymous()
       
-      if (game) {
-        this.$store.commit('joinGame', game)
-      } else {
-        this.$store.commit('showSnackbar', { color: 'error', message: error })
+      try {
+        const user = await this.$realm.logIn(credentials)
+        this.$store.commit('setUserId', user.id)
+      } catch (error) {
+        this.$store.commit('showSnackbar', { color: 'error', message: 'The website is not available right now' })
+        return
+      }
+      
+      try {
+        this.$store.commit('startJoiningGame')
+        const { game, error } = await this.$realm.currentUser.functions.joinGame(this.name)
+        this.$store.commit('stopJoiningGame')
+        
+        if (game) {
+          this.$store.commit('joinGame', game)
+          this.$store.commit('showSnackbar', { color: 'info', message: 'Joined successfully' })
+        } else {
+          this.$store.commit('showSnackbar', { color: 'error', message: error })
+        }
+      } catch (error) {
+        this.$store.commit('showSnackbar', { color: 'error', message: 'Error joining game' })
       }
     },
   },

@@ -32,6 +32,8 @@ export default {
       }
       
       this.$store.commit('leaveGame')
+      await this.$realm.currentUser.logOut()
+      this.$store.commit('setUserId', null)
     },
   },
 }
