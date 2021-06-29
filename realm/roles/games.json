@@ -1,0 +1,38 @@
+[
+  {
+    "name": "participant",
+    "apply_when": {
+      "participantIds": "%%user.id"
+    },
+    "insert": true,
+    "delete": true,
+    "search": true,
+    "read": true,
+    "write": true,
+    "fields": {
+      "name": {},
+      "participantIds": {},
+      "started": {}
+    },
+    "additional_fields": {}
+  },
+  {
+    "name": "other",
+    "apply_when": {},
+    "insert": false,
+    "delete": false,
+    "search": true,
+    "fields": {
+      "name": {
+        "read": true
+      },
+      "participantIds": {
+        "write": true
+      },
+      "started": {
+        "read": true
+      }
+    },
+    "additional_fields": {}
+  }
+]

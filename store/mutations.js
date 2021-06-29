@@ -19,4 +19,7 @@ export default {
   joinGame(state, game) {
     state.game = game
   },
+  leaveGame(state, game) {
+    state.game = null
+  },
 }

@@ -1,22 +1,35 @@
 {
   "bsonType": "object",
   "title": "Game",
-  "required": ["_id", "name", "participantIds", "started", "turn", "code", "guesses"],
+  "required": [
+    "name",
+    "participantIds",
+    "started",
+    "turn",
+    "code",
+    "guesses"
+  ],
   "properties": {
     "_id": {
       "bsonType": "objectId"
     },
     "name": {
       "bsonType": "string",
-      "minLength": 1,
-      "maxLength": 20
+      "minLength": {
+        "$numberInt": "1"
+      },
+      "maxLength": {
+        "$numberInt": "20"
+      }
     },
     "participantIds": {
       "bsonType": "array",
       "items": {
         "bsonType": "string"
       },
-      "maxItems": 4
+      "maxItems": {
+        "$numberInt": "4"
+      }
     },
     "started": {
       "bsonType": "bool"
@@ -24,11 +37,16 @@
     "turn": {
       "bsonType": "object",
       "title": "Turn",
-      "required": ["number", "participantId"],
+      "required": [
+        "number",
+        "participantId"
+      ],
       "properties": {
         "number": {
           "bsonType": "int",
-          "minimum": 1
+          "minimum": {
+            "$numberInt": "1"
+          }
         },
         "participantId": {
           "bsonType": "string"
@@ -38,13 +56,13 @@
     },
     "code": {
       "bsonType": "string",
-      "pattern": "/^\\d{4}$/"
+      "pattern": "^\\d{4}$"
     },
     "guesses": {
       "bsonType": "array",
       "items": {
         "bsonType": "string",
-        "pattern": "/^\\d{4}$/"
+        "pattern": "^\\d{4}$"
       }
     }
   },
