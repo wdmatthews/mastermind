@@ -22,10 +22,10 @@
       <v-spacer />
       <v-btn
         color="primary"
-        :disabled="!nameIsValid"
+        :disabled="!nameIsValid || joiningGame"
         @click="join"
       >
-        Join
+        {{ joiningGame ? 'Joining' : 'Join' }}
       </v-btn>
       <v-spacer />
     </v-card-actions>
@@ -45,9 +45,22 @@ export default {
       v => !v || v.length <= nameMaxLength || `${nameMaxLength} characters max`,
     ],
   }),
+  computed: {
+    joiningGame() {
+      return this.$store.state.joiningGame
+    },
+  },
   methods: {
-    join() {
+    async join() {
+      this.$store.commit('startJoiningGame')
+      const { game, error } = await this.$realm.currentUser.functions.joinGame(this.name)
+      this.$store.commit('stopJoiningGame')
       
+      if (game) {
+        this.$store.commit('joinGame', game)
+      } else {
+        this.$store.commit('showSnackbar', { color: 'error', message: error })
+      }
     },
   },
 }

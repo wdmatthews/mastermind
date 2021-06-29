@@ -10,4 +10,13 @@ export default {
   hideSnackbar(state) {
     state.snackbar.visible = false
   },
+  startJoiningGame(state) {
+    state.joiningGame = true
+  },
+  stopJoiningGame(state) {
+    state.joiningGame = false
+  },
+  joinGame(state, game) {
+    state.game = game
+  },
 }

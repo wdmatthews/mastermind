@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="!game && !joiningGame">
+    <template v-if="!game">
       <v-row
         no-gutters
         justify="center"
@@ -18,9 +18,6 @@
 import * as Realm from 'realm-web'
 
 export default {
-  data: vm => ({
-    joiningGame: false,
-  }),
   computed: {
     game() {
       return this.$store.state.game
