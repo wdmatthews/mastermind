@@ -71,7 +71,7 @@ export default {
         
         if (game) {
           this.$store.commit('joinGame', game)
-          this.$store.commit('showSnackbar', { color: 'info', message: 'Joined successfully' })
+          this.$store.commit('showSnackbar', { color: 'info', message: 'Joined game' })
         } else {
           this.$store.commit('showSnackbar', { color: 'error', message: error })
         }

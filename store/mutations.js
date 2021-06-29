@@ -19,6 +19,12 @@ export default {
   joinGame(state, game) {
     state.game = game
   },
+  startStartingGame(state) {
+    state.startingGame = true
+  },
+  stopStartingGame(state) {
+    state.startingGame = false
+  },
   updateGame(state, game) {
     state.game = game
   },

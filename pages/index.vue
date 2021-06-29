@@ -1,15 +1,24 @@
 <template>
-  <div>
-    <template v-if="!game">
+  <div :style="(!game || !game.started) ? 'height: 100%;' : ''">
+    <template v-if="!game || !game.started">
       <v-row
         no-gutters
         justify="center"
         align="center"
         class="pa-4"
-        style="height: 100vh"
+        style="height: 100%"
       >
-        <JoinGameCard />
+        <JoinGameCard v-if="!game" />
+        <StartGameCard v-else-if="!game.started" />
       </v-row>
+    </template>
+    <template v-if="game && game.started">
+      <p
+        v-show="game && game.turn.participantId === $store.state.userId"
+        class="ma-4 text-center text-h5"
+      >
+        It's your turn!
+      </p>
     </template>
   </div>
 </template>
@@ -43,6 +52,11 @@ export default {
       })) {
         if (!this.game || this.game.name !== name) { return }
         const { fullDocument } = change
+        
+        if (!this.game.started && fullDocument.started) {
+          this.$store.commit('showSnackbar', { color: 'info', message: 'Game was started' })
+        }
+        
         this.$store.commit('updateGame', fullDocument)
       }
     },

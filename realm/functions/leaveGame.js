@@ -19,6 +19,4 @@ exports = async function leaveGame(name) {
   participantIds = [...game.participantIds];
   participantIds.splice(participantIndex, 1);
   await gamesCollection.updateOne({ name }, { $set: { participantIds } });
-  
-  return { game };
 };
