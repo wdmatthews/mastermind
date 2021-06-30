@@ -19,6 +19,7 @@
         </template>
       </v-snackbar>
     </v-main>
+    <TheFooter />
   </v-app>
 </template>
 

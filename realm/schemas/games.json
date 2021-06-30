@@ -7,7 +7,8 @@
     "started",
     "turn",
     "code",
-    "guesses"
+    "guesses",
+    "winnerId"
   ],
   "properties": {
     "_id": {
@@ -64,6 +65,9 @@
         "bsonType": "string",
         "pattern": "^\\d{4}$"
       }
+    },
+    "winnerId": {
+      "bsonType": "string"
     }
   },
   "additionalProperties": false

@@ -17,6 +17,7 @@ exports = async function joinGame(name) {
       },
       code: '1234',
       guesses: [],
+      winnerId: '',
     };
     const { insertedId } = await gamesCollection.insertOne(game);
     game._id = insertedId.toString();
@@ -31,5 +32,6 @@ exports = async function joinGame(name) {
     await gamesCollection.updateOne({ name }, { $set: { participantIds: game.participantIds } });
   }
   
+  game = await gamesCollection.findOne({ name });
   return { game };
 };

@@ -14,11 +14,24 @@
     </template>
     <template v-if="game && game.started">
       <p
-        v-show="game && game.turn.participantId === $store.state.userId"
-        class="ma-4 text-center text-h5"
+        v-show="game && game.turn && game.turn.participantId === $store.state.userId"
+        class="mx-4 pt-4 mb-0 text-center text-h5"
       >
         It's your turn!
       </p>
+      <v-row
+        justify="center"
+        class="ma-2"
+      >
+        <v-col
+          v-for="(guess, i) in guesses"
+          :key="`guess-${i}`"
+          cols="12"
+          class="pa-2 d-flex"
+        >
+          <GuessSubmitted :guess="guess" />
+        </v-col>
+      </v-row>
     </template>
   </div>
 </template>
@@ -28,6 +41,10 @@ export default {
   computed: {
     game() {
       return this.$store.state.game
+    },
+    guesses() {
+      if (!this.game || !this.game.guesses) { return [] }
+      return [...this.game.guesses].reverse()
     },
   },
   watch: {

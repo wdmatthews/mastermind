@@ -16,7 +16,7 @@
       <v-spacer />
       <v-btn
         color="primary"
-        :disabled="startingGame"
+        :disabled="startingGame || game.participantIds.length < 2"
         @click="start"
       >
         {{ startingGame ? 'Starting' : 'Start' }}
