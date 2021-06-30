@@ -20,7 +20,7 @@ exports = async function startGame(name) {
       code += Math.floor((Math.random() * numColors) + 1);
     }
     
-    game.turn.participantId = game.participantIds[Math.floor((Math.random() * (game.participantIds.length - 1)) + 1)];
+    game.turn.participantId = game.participantIds[Math.floor(Math.random() * game.participantIds.length)];
     await gamesCollection.updateOne({ name }, { $set: { started: true, code, turn: game.turn } });
   }
   

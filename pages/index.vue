@@ -49,7 +49,7 @@
           class="pa-2 d-flex"
         >
           <GuessSubmitted
-            class="mx-auto d-flex"
+            class="mx-auto"
             :guess="game.code"
           />
         </v-col>
@@ -60,6 +60,9 @@
 
 <script>
 export default {
+  data: vm => ({
+    isWatchingGame: false,
+  }),
   computed: {
     game() {
       return this.$store.state.game
@@ -70,10 +73,13 @@ export default {
     },
   },
   watch: {
-    game(newValue, oldValue) {
-      if (newValue && !oldValue) {
+    game() {
+      if (this.game && !this.isWatchingGame) {
+        this.isWatchingGame = true
         this.watchGameEvents()
         this.watchGameEnd()
+      } else if (!this.game) {
+        this.isWatchingGame = false
       }
     },
   },
@@ -89,7 +95,11 @@ export default {
           'fullDocument.name': name,
         },
       })) {
-        if (!this.game || this.game.name !== name) { return }
+        if (!this.game || this.game.name !== name) {
+          this.isWatchingGame = false
+          return
+        }
+        
         const { fullDocument } = change
         
         if (!this.game.started && fullDocument.started) {

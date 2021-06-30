@@ -26,7 +26,7 @@ export default {
     state.startingGame = false
   },
   updateGame(state, game) {
-    state.game = game
+    state.game = { ...state.game, ...game }
   },
   leaveGame(state) {
     state.game = null
