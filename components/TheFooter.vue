@@ -14,6 +14,7 @@
         :key="`choice-${i}`"
         ref="choices"
         class="pa-2"
+        @change="getGuess"
       />
       <v-col
         cols="12"
@@ -33,22 +34,24 @@
 
 <script>
 export default {
+  data: vm => ({
+    selectedGuess: '',
+  }),
   computed: {
     game() {
       return this.$store.state.game
     },
-    selectedCode() {
-      if (!this.$refs.choices) { return '' }
-      let code = ''
-      this.$refs.choices.forEach((choice) => {
-        code += choice.value + 1
-      })
-      return code
-    },
   },
   methods: {
+    getGuess() {
+      let guess = ''
+      this.$refs.choices.forEach((choice) => {
+        guess += choice.value + 1
+      })
+      this.selectedGuess = guess
+    },
     async submitGuess() {
-      await this.$realm.currentUser.functions.submitGuess(this.game.name, this.selectedCode)
+      await this.$realm.currentUser.functions.submitGuess(this.game.name, this.selectedGuess)
     },
   },
 }

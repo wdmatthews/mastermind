@@ -4,6 +4,7 @@
     mandatory
     background-color="transparent"
     :color="colors[value]"
+    @change="$emit('change')"
   >
     <v-btn
       v-for="(color, i) in colors"
@@ -22,5 +23,8 @@ export default {
     value: 0,
     colors,
   }),
+  mounted() {
+    this.$emit('change')
+  },
 }
 </script>

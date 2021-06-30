@@ -12,7 +12,7 @@
         <StartGameCard v-else-if="!game.started" />
       </v-row>
     </template>
-    <template v-if="game && game.started">
+    <template v-if="game && game.started && !game.winnerId">
       <p
         v-show="game && game.turn && game.turn.participantId === $store.state.userId"
         class="mx-4 pt-4 mb-0 text-center text-h5"
@@ -29,7 +29,29 @@
           cols="12"
           class="pa-2 d-flex"
         >
-          <GuessSubmitted :guess="guess" />
+          <GuessSubmitted
+            class="mx-auto d-flex"
+            :guess="guess"
+          />
+        </v-col>
+      </v-row>
+    </template>
+    <template v-if="game && game.started && game.winnerId">
+      <p class="mt-4 mb-0 text-center">
+        Game over. The correct guess was {{ game.code }}.
+      </p>
+      <v-row
+        justify="center"
+        class="ma-2"
+      >
+        <v-col
+          cols="12"
+          class="pa-2 d-flex"
+        >
+          <GuessSubmitted
+            class="mx-auto d-flex"
+            :guess="game.code"
+          />
         </v-col>
       </v-row>
     </template>

@@ -1,6 +1,6 @@
 <template>
   <v-card
-    class="pa-1 mx-auto d-flex"
+    class="pa-1"
   >
     <v-chip
       v-for="(colorIndex, i) in selectedColorIndexes"
